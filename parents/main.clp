@@ -17,7 +17,7 @@
         (parent john donna)
         (parent john george)
         (parent john mary)
-        (parent mary james)
+        (parent mary1 james)
         (parent george juan)
         (female donna)
         (male george)
@@ -26,10 +26,27 @@
         (male juan)
 )
 
+;;===============objects needed=============================================
+;;(deftemplate RelationShip(slot relation))
+
+
+;;===============reglas de inputs===========================================
+(defrule getNames
+   (declare (salience 100))
+   =>
+   (printout t "Enter first name: ")
+   (bind ?name1 (read))
+   (printout t "Enter second name: ")
+   (bind ?name2 (read))
+
+
+   (assert (abuelo ?name1))
+   (assert (nieto ?name2))
+)
 
 ;;===============reglas=====================================================
 
-(defrule isBrother
+(defrule brotherRelation
     (male ?x)
     (parent ?z ?x)
     (parent ?z ?y)
@@ -37,7 +54,7 @@
     (assert (brother ?x ?y))
 )
 
-(defrule isCousing
+(defrule cousingRelation
     (parent ?w ?x)
     (parent ?z ?y)
     (brother ?w ?z)
@@ -45,9 +62,23 @@
     (assert (cousing ?x ?y))
 )
 
-(defrule isGrandFather
+(defrule grandFatherRelation
     (parent ?x ?z)
     (parent ?z ?y)
    =>
-    (printout t ?x " is GrandFather of: " ?y)
+    (assert (grandFather ?x ?y))
 )
+;;===============ending rules===============================================
+(defrule isGrandFather
+    (grandFather ?x ?y)
+   =>
+    (printout t "Yes, " ?x " is GrandFather of: " ?y)
+)
+
+(defrule isNotGrandFather
+   (not (grandFather ?a ?b))
+   =>
+    (printout t "Not is")
+)
+
+
