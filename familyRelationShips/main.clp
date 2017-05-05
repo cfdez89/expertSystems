@@ -19,11 +19,13 @@
         (parent john mary)
         (parent juana mary)
         (parent mary james)
+        (parent mary evelyn)
         (parent george juan)
         (female donna)
         (male george)
         (female juana)
         (female mary)
+        (female evelyn)
         (male james)
         (male juan)
         (male john)
@@ -44,7 +46,7 @@
    (printout t "--------Results--------" crlf)
 
   ;;(assert (RelationShip (grandFather ?name1 ?name2))))
-   ;;(assert (abuelo ?name1))
+   (assert (abuelo ?name1))
    ;;(assert (nieto ?name2))
 )
 
@@ -100,6 +102,36 @@
     (assert (grandMother ?x ?y))
 )
 
+(defrule grandChildRelation
+    (grandFather ?z ?x)
+    (male ?x)   
+   =>
+    (assert (grandChild ?x ?z))
+)
+
+(defrule grandDaugtherRelation
+    (grandFather ?z ?x)
+    (female ?x)   
+   =>
+    (assert (grandDaugther ?x ?z))
+)
+
+
+(defrule uncleRelation
+    (parent ?z ?x)
+    (brother ?y ?z)  
+   =>
+    (assert (brother ?y ?x))
+)
+
+(defrule auntRelation
+    (parent ?z ?x)
+    (sister ?y ?z)  
+   =>
+    (assert (aunt ?y ?x))
+)
+
+
 (defrule grandFatherOrGrandMotherRelation
     (parent ?x ?z)
     (parent ?z ?y)
@@ -111,15 +143,11 @@
 
 ;;===============reglas para evaluar estados finales===============================================
 (defrule isGrandFather
-   ;;?resp1 <- (abuelo ?x)
-   ;;?resp2 <- (nieto ?y)
-   ;;(bind ?r1 ((facts  ?resp1)))
-   ;;(bind ?r2 ((facts  ?resp2)))
+    ;;?b <- (abuelo ?x)
+    ;;(bind ?r2 ((facts  ?resp2)))
+    ;;(grandFather ?a ?b)
     (grandFather ?a ?b)
-   ;;(eq    (RelationShip (grandFather ?a ?b))   (grandFather ?r1 ?r2))
    =>
-      ;;(printout t "-" ?a )
-   ;;(printout t "-" ?resp2 )
     (printout t ?a " is GrandFather of: " ?b crlf)
 )
 
