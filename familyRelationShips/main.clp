@@ -121,7 +121,7 @@
     (parent ?z ?x)
     (brother ?y ?z)  
    =>
-    (assert (brother ?y ?x))
+    (assert (uncle ?y ?x))
 )
 
 (defrule auntRelation
